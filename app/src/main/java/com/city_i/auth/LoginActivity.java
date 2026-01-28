@@ -1,13 +1,14 @@
 package com.city_i.auth;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.city_i.MainActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.city_i.dashboard.UserDashboardActivity;
 import com.city_i.services.FirebaseService;
 
