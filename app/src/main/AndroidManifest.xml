@@ -44,9 +44,9 @@
         <!-- LOGIN ACTIVITY - Must be exported or have intent-filter -->
         <activity
             android:name=".auth.LoginActivity"
-            android:exported="false"  <!-- Changed to false since we navigate from MainActivity -->
-        android:theme="@style/Theme.CivicConnect"
-        android:windowSoftInputMode="adjustResize|stateVisible" />
+            android:exported="false"
+            android:theme="@style/Theme.CivicConnect"
+            android:windowSoftInputMode="adjustResize|stateVisible" />
 
         <!-- REGISTER ACTIVITY -->
         <activity

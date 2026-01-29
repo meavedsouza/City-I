@@ -151,6 +151,24 @@ public class AIPriorityEngine {
     }
 
     /**
+     * Convenience wrapper used by older UI code.
+     */
+    public int calculatePriority(String title,
+                                 String description,
+                                 String category,
+                                 double latitude,
+                                 double longitude) {
+        IssueModel issue = new IssueModel();
+        issue.setTitle(title);
+        issue.setDescription(description);
+        issue.setCategory(category);
+        issue.setLatitude(latitude);
+        issue.setLongitude(longitude);
+        issue.setCreatedAt(new Date());
+        return calculateIssuePriority(issue);
+    }
+
+    /**
      * Predict priority using TensorFlow Lite model
      */
     private int predictWithModel(int... features) {

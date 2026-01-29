@@ -6,4 +6,7 @@
     </style>
 
     <style name="Theme.CityI" parent="Base.Theme.CityI" />
+
+    <!-- Back-compat alias used by AndroidManifest.xml -->
+    <style name="Theme.CivicConnect" parent="Theme.CityI" />
 </resources>

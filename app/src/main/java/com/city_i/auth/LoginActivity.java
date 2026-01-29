@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.city_i.R;
 import com.city_i.dashboard.UserDashboardActivity;
 import com.city_i.services.FirebaseService;
 

@@ -1,69 +1,52 @@
-package services;  // This matches the import
+package com.city_i.services;
 
-import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class FirebaseService {
-    private static final String TAG = "FirebaseService";
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
+    private static final FirebaseAuth AUTH = FirebaseAuth.getInstance();
+    private static final FirebaseFirestore DB = FirebaseFirestore.getInstance();
 
-    public FirebaseService() {
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+    /**
+     * Callback used by auth screens.
+     */
+    public interface AuthCallback {
+        void onSuccess();
+        void onFailure(String error);
     }
 
-    // Login method
-    public void loginUser(String email, String password, LoginCallback callback) {
-        mAuth.signInWithEmailAndPassword(email, password)
+    public static void loginUser(String email, String password, AuthCallback callback) {
+        AUTH.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        callback.onSuccess(user);
+                        callback.onSuccess();
                     } else {
-                        callback.onFailure(task.getException().getMessage());
+                        callback.onFailure(task.getException() != null ? task.getException().getMessage() : "Unknown error");
                     }
                 });
     }
 
-    // Register method
-    public void registerUser(String email, String password, String name, RegisterCallback callback) {
-        mAuth.createUserWithEmailAndPassword(email, password)
+    public static void registerUser(String name, String email, String password, AuthCallback callback) {
+        AUTH.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        // Save additional user data to Firestore
-                        if (user != null) {
-                            saveUserToFirestore(user.getUid(), email, name, callback);
-                        }
+                    if (task.isSuccessful() && AUTH.getCurrentUser() != null) {
+                        String uid = AUTH.getCurrentUser().getUid();
+                        saveUserToFirestore(uid, email, name, callback);
                     } else {
-                        callback.onFailure(task.getException().getMessage());
+                        callback.onFailure(task.getException() != null ? task.getException().getMessage() : "Unknown error");
                     }
                 });
     }
 
-    private void saveUserToFirestore(String userId, String email, String name, RegisterCallback callback) {
+    private static void saveUserToFirestore(String userId, String email, String name, AuthCallback callback) {
         User user = new User(userId, email, name);
-        db.collection("users").document(userId)
+        DB.collection("users").document(userId)
                 .set(user)
                 .addOnSuccessListener(aVoid -> callback.onSuccess())
                 .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
 
-    // Callback interfaces
-    public interface LoginCallback {
-        void onSuccess(FirebaseUser user);
-        void onFailure(String error);
-    }
-
-    public interface RegisterCallback {
-        void onSuccess();
-        void onFailure(String error);
-    }
-
-    // User model class
+    // User model class (kept here for simplicity)
     public static class User {
         private String id;
         private String email;

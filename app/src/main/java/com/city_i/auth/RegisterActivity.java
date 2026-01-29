@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.city_i.R;
 import com.city_i.services.FirebaseService;
 
 public class RegisterActivity extends AppCompatActivity {
